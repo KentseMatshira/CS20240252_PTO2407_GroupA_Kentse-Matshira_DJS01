@@ -13,7 +13,17 @@ const initDistanceKilometers = 0;// distance (km)i
 const initFuelKilograms = 5000; // remaining fuel (kg)
 const fuelBurnRateKilogramsPerSecond = 0.5;// fuel burn rate (kg/s)
 
+// Utility function to convert acceleration from m/s² to km/h²
+ const convertAccelToKilometersPerHourSquared = (accelMetersPerSecondSquared) => { return accelMetersPerSecondSquared * 12960 }; // 1 m/s² = 12960 km/h²
 
+/**
+  * Calculates the new velocity based on acceleration, initial velocity, and time.
+  * @param {number} initVelocityKilometersPerHour
+  * @param {number} accelKilometersPerHourSquared
+  * @param {number} timeInSeconds
+  * @returns {number}
+  * @throws {Error}
+  */
 const d2 = d + (vel*time) //calcultes new distance
 const rf = fbr*time //calculates remaining fuel
 const vel2 = calcNewVel(acc, vel, time) //calculates new velocity based on acceleration
