@@ -24,21 +24,51 @@ const fuelBurnRateKilogramsPerSecond = 0.5;// fuel burn rate (kg/s)
   * @returns {number}
   * @throws {Error}
   */
-const d2 = d + (vel*time) //calcultes new distance
-const rf = fbr*time //calculates remaining fuel
-const vel2 = calcNewVel(acc, vel, time) //calculates new velocity based on acceleration
-
-// Pick up an error with how the function below is called and make it robust to such errors
-calcNewVel = (vel, acc, time) => { 
-  return vel + (acc*time)
-}
-
-console.log(`Corrected New Velocity: ${vel2} km/h`);
-console.log(`Corrected New Distance: ${d2} km`);
-console.log(`Corrected Remaining Fuel: ${rf} kg`);
 
 
+const calcNewVel = (
+  initVelocityKilometersPerHour,
+  accelKilometersPerHourSquared,
+  timeInSeconds
+) => {
+  if (typeof initVelocityKilometersPerHour !== "number") {
+    throw new Error("Initial velocity must be a number in km/h.");
+  }
+  if (typeof accelKilometersPerHourSquared !== "number") {
+    throw new Error("Acceleration must be a number in km/h².");
+  }
+  if (typeof timeInSeconds !== "number") {
+    throw new Error("Time must be a number in seconds.");
+  }
 
+  const timeHours = timeInSeconds / 3600;
+
+  // Calculate new velocity: v = v₀ + at
+  return (
+    initVelocityKilometersPerHour + accelKilometersPerHourSquared * timeHours
+  );
+};
+
+// Convert acceleration from m/s² to km/h²
+const accelKilometersPerHourSquared = convertAccelToKilometersPerHourSquared(
+  accelMetersPerSecondSquared
+);
+
+// Calculations
+const newDistanceKilometers =
+  initDistanceKilometers + velKilometersPerHour * (timeSeconds / 3600);
+const remainingFuelKilograms =
+  initFuelKilograms - fuelBurnRateKilogramsPerSecond * timeSeconds;
+const newVelocityKilometersPerHour = calcNewVel(
+  velKilometersPerHour,
+  accelKilometersPerHourSquared,
+  timeSeconds
+);
+
+// Outputs
+console.log(`Corrected New Velocity: ${newVelocityKilometersPerHour} km/h`);
+console.log(`Corrected New Distance: ${newDistanceKilometers} km`);
+console.log(`Corrected Remaining Fuel: ${remainingFuelKilograms} kg`);
 
 
 
